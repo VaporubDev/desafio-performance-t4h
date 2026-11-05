@@ -1,0 +1,15 @@
+﻿SELECT 19206
+CREATE INDEX
+                                                                        QUERY PLAN                                                                         
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.29..1.13 rows=10 width=84) (actual time=0.022..0.024 rows=10 loops=1)
+   Buffers: shared hit=1 read=2
+   ->  Index Scan using idx_mv_top_produtos_rec_id on mv_top_produtos  (cost=0.29..1616.38 rows=19206 width=84) (actual time=0.021..0.022 rows=10 loops=1)
+         Buffers: shared hit=1 read=2
+ Planning:
+   Buffers: shared hit=21 read=1
+ Planning Time: 0.178 ms
+ Execution Time: 0.043 ms
+(8 rows)
+
+DROP MATERIALIZED VIEW
