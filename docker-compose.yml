@@ -3,6 +3,12 @@ name: desafio-performance
 services:
   banco:
     image: postgres:16.4
+    command: >
+      postgres
+      -c shared_buffers=128MB
+      -c work_mem=8MB
+      -c effective_cache_size=384MB
+      -c random_page_cost=1.1
     shm_size: 256mb
     environment:
       POSTGRES_USER: loja
