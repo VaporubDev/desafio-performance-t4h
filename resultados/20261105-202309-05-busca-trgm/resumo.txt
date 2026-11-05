@@ -1,0 +1,17 @@
+Medição: 05-busca-trgm
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        1707
+Requisições/s:      27.88
+Tempo de resposta:  mediana 492.3 ms | p95 1768.1 ms | p99 3801.1 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               448       300.5 ms      504.7 ms      703.0 ms      0.0%    
+cliente-por-email     254       306.6 ms      598.1 ms      949.3 ms      0.0%    
+pedidos-do-cliente    358       697.0 ms      1005.1 ms     1106.5 ms     0.0%    
+pedidos-por-status    232       1206.2 ms     3934.5 ms     9628.9 ms     0.0%    
+busca-produtos        254       395.2 ms      696.4 ms      902.8 ms      0.0%    
+vendas-por-dia        132       1497.4 ms     3305.0 ms     4005.4 ms     0.0%    
+top-produtos          29        300.8 ms      496.2 ms      931.2 ms      0.0%    
