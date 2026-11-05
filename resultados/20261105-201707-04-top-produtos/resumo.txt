@@ -1,0 +1,17 @@
+Medição: 04-top-produtos
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        1649
+Requisições/s:      27.12
+Tempo de resposta:  mediana 500.7 ms | p95 1696.0 ms | p99 3748.3 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               434       304.2 ms      596.4 ms      766.1 ms      0.0%    
+cliente-por-email     253       306.5 ms      597.1 ms      702.4 ms      0.0%    
+pedidos-do-cliente    341       696.4 ms      1002.6 ms     1260.9 ms     0.0%    
+pedidos-por-status    226       1298.7 ms     3676.3 ms     10322.1 ms    0.0%    
+busca-produtos        244       501.7 ms      802.0 ms      999.0 ms      0.0%    
+vendas-por-dia        123       1397.6 ms     3700.6 ms     8270.9 ms     0.0%    
+top-produtos          28        298.2 ms      506.9 ms      574.0 ms      0.0%    
