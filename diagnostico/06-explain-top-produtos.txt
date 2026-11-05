@@ -1,0 +1,49 @@
+﻿                                                                                                      QUERY PLAN                                                                                                      
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=49578.81..49578.84 rows=10 width=56) (actual time=2109.629..2117.375 rows=10 loops=1)
+   Buffers: shared hit=5346 read=7528
+   ->  Sort  (cost=49578.81..49628.81 rows=20000 width=56) (actual time=2109.627..2117.372 rows=10 loops=1)
+         Sort Key: (sum((i.quantidade * i.preco_unitario_centavos))) DESC, pr.id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=5346 read=7528
+         ->  Finalize HashAggregate  (cost=48946.62..49146.62 rows=20000 width=56) (actual time=2103.614..2114.775 rows=19206 loops=1)
+               Group Key: pr.id
+               Batches: 1  Memory Usage: 3089kB
+               Buffers: shared hit=5340 read=7528
+               ->  Gather  (cost=44446.62..48646.62 rows=40000 width=56) (actual time=2005.168..2026.341 rows=57618 loops=1)
+                     Workers Planned: 2
+                     Workers Launched: 2
+                     Buffers: shared hit=5340 read=7528
+                     ->  Partial HashAggregate  (cost=43446.62..43646.62 rows=20000 width=56) (actual time=2000.765..2004.654 rows=19206 loops=3)
+                           Group Key: pr.id
+                           Batches: 1  Memory Usage: 3089kB
+                           Buffers: shared hit=5340 read=7528
+                           Worker 0:  Batches: 1  Memory Usage: 3089kB
+                           Worker 1:  Batches: 1  Memory Usage: 3089kB
+                           ->  Hash Join  (cost=18907.79..37828.50 rows=561812 width=48) (actual time=195.815..1520.915 rows=450000 loops=3)
+                                 Hash Cond: (i.produto_id = pr.id)
+                                 Buffers: shared hit=5340 read=7528
+                                 ->  Parallel Hash Join  (cost=18267.79..35713.43 rows=561812 width=12) (actual time=189.151..831.484 rows=450000 loops=3)
+                                       Hash Cond: (i.pedido_id = p.id)
+                                       Buffers: shared hit=4764 read=7528
+                                       ->  Parallel Seq Scan on itens_pedido i  (cost=0.00..15805.00 rows=625000 width=16) (actual time=0.073..190.151 rows=500000 loops=3)
+                                             Buffers: shared hit=2027 read=7528
+                                       ->  Parallel Hash  (cost=15926.91..15926.91 rows=187271 width=4) (actual time=187.099..187.101 rows=150000 loops=3)
+                                             Buckets: 524288  Batches: 1  Memory Usage: 21760kB
+                                             Buffers: shared hit=2737
+                                             ->  Parallel Index Only Scan using idx_pedidos_status_criado_id on pedidos p  (cost=0.42..15926.91 rows=187271 width=4) (actual time=5.531..140.010 rows=150000 loops=3)
+                                                   Filter: (status <> 'cancelado'::text)
+                                                   Rows Removed by Filter: 16667
+                                                   Heap Fetches: 144
+                                                   Buffers: shared hit=2737
+                                 ->  Hash  (cost=390.00..390.00 rows=20000 width=40) (actual time=6.437..6.438 rows=20000 loops=3)
+                                       Buckets: 32768  Batches: 1  Memory Usage: 1696kB
+                                       Buffers: shared hit=570
+                                       ->  Seq Scan on produtos pr  (cost=0.00..390.00 rows=20000 width=40) (actual time=0.018..2.299 rows=20000 loops=3)
+                                             Buffers: shared hit=570
+ Planning:
+   Buffers: shared hit=276
+ Planning Time: 1.076 ms
+ Execution Time: 2120.656 ms
+(45 rows)
+
