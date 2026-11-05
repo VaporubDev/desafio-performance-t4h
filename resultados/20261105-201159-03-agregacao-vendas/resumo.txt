@@ -1,0 +1,17 @@
+Medição: 03-agregacao-vendas
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        809
+Requisições/s:      12.73
+Tempo de resposta:  mediana 399.2 ms | p95 7079.0 ms | p99 25912.6 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               207       205.0 ms      499.7 ms      597.0 ms      0.0%    
+cliente-por-email     127       205.5 ms      503.8 ms      596.2 ms      0.0%    
+pedidos-do-cliente    163       500.7 ms      987.2 ms      1330.8 ms     0.0%    
+pedidos-por-status    114       1398.2 ms     32183.1 ms    39677.1 ms    0.0%    
+busca-produtos        129       399.2 ms      698.5 ms      892.3 ms      0.0%    
+vendas-por-dia        56        1399.5 ms     6973.1 ms     7968.9 ms     0.0%    
+top-produtos          13        11897.9 ms    22261.5 ms    22459.4 ms    0.0%    
