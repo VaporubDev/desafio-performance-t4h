@@ -1,0 +1,30 @@
+﻿                                                                             QUERY PLAN                                                                             
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Subquery Scan on p  (cost=0.42..328.40 rows=5 width=58) (actual time=0.160..0.362 rows=5 loops=1)
+   Buffers: shared hit=73 read=5
+   ->  Index Scan using idx_pedidos_cliente_criado_id on pedidos  (cost=0.42..24.51 rows=5 width=18) (actual time=0.053..0.068 rows=5 loops=1)
+         Index Cond: (cliente_id = 7)
+         Buffers: shared hit=6 read=2
+   SubPlan 1
+     ->  Aggregate  (cost=46.99..47.00 rows=1 width=32) (actual time=0.052..0.052 rows=1 loops=5)
+           Buffers: shared hit=47 read=3
+           ->  Nested Loop  (cost=0.71..46.97 rows=4 width=43) (actual time=0.043..0.046 rows=2 loops=5)
+                 Buffers: shared hit=47 read=3
+                 ->  Index Scan using idx_itens_pedido_pedido_id_id on itens_pedido i  (cost=0.43..13.75 rows=4 width=16) (actual time=0.034..0.035 rows=2 loops=5)
+                       Index Cond: (pedido_id = p.id)
+                       Buffers: shared hit=17 read=3
+                 ->  Index Scan using produtos_pkey on produtos pr  (cost=0.29..8.30 rows=1 width=31) (actual time=0.005..0.005 rows=1 loops=10)
+                       Index Cond: (id = i.produto_id)
+                       Buffers: shared hit=30
+   SubPlan 2
+     ->  Aggregate  (cost=13.77..13.78 rows=1 width=8) (actual time=0.004..0.004 rows=1 loops=5)
+           Buffers: shared hit=20
+           ->  Index Scan using idx_itens_pedido_pedido_id_id on itens_pedido i_1  (cost=0.43..13.75 rows=4 width=8) (actual time=0.003..0.003 rows=2 loops=5)
+                 Index Cond: (pedido_id = p.id)
+                 Buffers: shared hit=20
+ Planning:
+   Buffers: shared hit=268
+ Planning Time: 1.078 ms
+ Execution Time: 0.934 ms
+(26 rows)
+
