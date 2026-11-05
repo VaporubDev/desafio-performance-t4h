@@ -1,0 +1,25 @@
+﻿CREATE EXTENSION
+CREATE INDEX
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=282.34..282.39 rows=20 width=44) (actual time=1.473..1.476 rows=20 loops=1)
+   Buffers: shared hit=208
+   ->  Sort  (cost=282.34..284.87 rows=1010 width=44) (actual time=1.472..1.473 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=208
+         ->  Bitmap Heap Scan on produtos  (cost=52.84..255.47 rows=1010 width=44) (actual time=0.286..1.079 rows=1000 loops=1)
+               Recheck Cond: (nome ~~* '%cadeira%'::text)
+               Heap Blocks: exact=190
+               Buffers: shared hit=202
+               ->  Bitmap Index Scan on idx_produtos_nome_trgm  (cost=0.00..52.59 rows=1010 width=0) (actual time=0.228..0.228 rows=1000 loops=1)
+                     Index Cond: (nome ~~* '%cadeira%'::text)
+                     Buffers: shared hit=12
+ Planning:
+   Buffers: shared hit=87
+ Planning Time: 0.754 ms
+ Execution Time: 2.012 ms
+(17 rows)
+
+DROP INDEX
+DROP EXTENSION
