@@ -1,0 +1,17 @@
+Medição: 07-pg-tuning
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        4656
+Requisições/s:      76.63
+Tempo de resposta:  mediana 102.3 ms | p95 1092.1 ms | p99 1602.6 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1213      96.7 ms       196.9 ms      204.8 ms      0.0%    
+cliente-por-email     675       98.5 ms       201.9 ms      296.4 ms      0.0%    
+pedidos-do-cliente    962       185.9 ms      299.5 ms      394.7 ms      0.0%    
+pedidos-por-status    677       503.2 ms      1226.4 ms     1826.5 ms     0.0%    
+busca-produtos        687       99.9 ms       199.5 ms      292.9 ms      0.0%    
+vendas-por-dia        358       1089.8 ms     1797.1 ms     2004.1 ms     0.0%    
+top-produtos          84        94.6 ms       105.0 ms      197.3 ms      0.0%    
