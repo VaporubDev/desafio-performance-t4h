@@ -63,39 +63,53 @@ rotas.get('/clientes/:id/pedidos', assincrono(async (req, res) => {
   const id = inteiroPositivo(req.params.id);
   if (id === null) return res.status(400).json({ erro: 'id invalido' });
 
-  const clientes = await consultar('SELECT * FROM clientes WHERE id = $1', [id]);
+  const clientes = await consultar('SELECT id FROM clientes WHERE id = $1', [id]);
   if (clientes.length === 0) return res.status(404).json({ erro: 'cliente nao encontrado' });
 
-  const pedidos = await consultar(
-    'SELECT * FROM pedidos WHERE cliente_id = $1 ORDER BY criado_em DESC, id DESC',
+  const linhas = await consultar(
+    `WITH p AS (
+       SELECT id, status, criado_em
+         FROM pedidos
+        WHERE cliente_id = $1
+        ORDER BY criado_em DESC, id DESC
+     )
+     SELECT p.id, p.status, p.criado_em,
+            coalesce(
+              (
+                SELECT json_agg(
+                         json_build_object(
+                           'produto_id', i.produto_id,
+                           'produto_nome', pr.nome,
+                           'quantidade', i.quantidade,
+                           'preco_unitario_centavos', i.preco_unitario_centavos
+                         )
+                         ORDER BY i.id
+                       )
+                  FROM itens_pedido i
+                  JOIN produtos pr ON pr.id = i.produto_id
+                 WHERE i.pedido_id = p.id
+              ),
+              '[]'::json
+            ) AS itens,
+            coalesce(
+              (
+                SELECT sum(i.quantidade * i.preco_unitario_centavos)
+                  FROM itens_pedido i
+                 WHERE i.pedido_id = p.id
+              ),
+              0
+            ) AS total_centavos
+       FROM p`,
     [id],
   );
 
-  const resposta = [];
-  for (const pedido of pedidos) {
-    const itens = await consultar('SELECT * FROM itens_pedido WHERE pedido_id = $1 ORDER BY id', [pedido.id]);
-
-    const itensFormatados = [];
-    let total = 0;
-    for (const item of itens) {
-      const [produto] = await consultar('SELECT * FROM produtos WHERE id = $1', [item.produto_id]);
-      itensFormatados.push({
-        produto_id: item.produto_id,
-        produto_nome: produto.nome,
-        quantidade: item.quantidade,
-        preco_unitario_centavos: item.preco_unitario_centavos,
-      });
-      total += item.quantidade * item.preco_unitario_centavos;
-    }
-
-    resposta.push({
-      id: pedido.id,
-      status: pedido.status,
-      criado_em: pedido.criado_em,
-      total_centavos: total,
-      itens: itensFormatados,
-    });
-  }
+  const resposta = linhas.map((linha) => ({
+    id: linha.id,
+    status: linha.status,
+    criado_em: linha.criado_em,
+    total_centavos: Number(linha.total_centavos),
+    itens: linha.itens || [],
+  }));
 
   res.json(resposta);
 }));
