@@ -1,0 +1,32 @@
+﻿                                                                                       QUERY PLAN                                                                                       
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=33103.75..35024.41 rows=4447 width=52) (actual time=29.828..37.061 rows=7 loops=1)
+   Group Key: ((pedidos.criado_em)::date)
+   Buffers: shared hit=20046
+   ->  Gather Merge  (cost=33103.75..34657.53 rows=13341 width=24) (actual time=29.224..35.613 rows=12945 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=20046
+         ->  Sort  (cost=32103.73..32117.63 rows=5559 width=24) (actual time=25.257..25.467 rows=4315 loops=3)
+               Sort Key: ((pedidos.criado_em)::date), pedidos.id
+               Sort Method: quicksort  Memory: 439kB
+               Buffers: shared hit=20046
+               Worker 0:  Sort Method: quicksort  Memory: 463kB
+               Worker 1:  Sort Method: quicksort  Memory: 288kB
+               ->  Nested Loop  (cost=0.85..31757.94 rows=5559 width=24) (actual time=4.254..23.725 rows=4315 loops=3)
+                     Buffers: shared hit=20016
+                     ->  Parallel Index Only Scan using idx_pedidos_status_criado_id on pedidos  (cost=0.42..15833.74 rows=1853 width=12) (actual time=4.196..15.608 rows=1438 loops=3)
+                           Index Cond: ((criado_em >= '2024-01-01 00:00:00'::timestamp without time zone) AND (criado_em < '2024-01-08 00:00:00'::timestamp without time zone))
+                           Filter: (status <> 'cancelado'::text)
+                           Rows Removed by Filter: 160
+                           Heap Fetches: 0
+                           Buffers: shared hit=2688
+                     ->  Index Scan using idx_itens_pedido_pedido_id_id on itens_pedido i  (cost=0.43..8.55 rows=4 width=12) (actual time=0.005..0.005 rows=3 loops=4313)
+                           Index Cond: (pedido_id = pedidos.id)
+                           Buffers: shared hit=17328
+ Planning:
+   Buffers: shared hit=264
+ Planning Time: 1.124 ms
+ Execution Time: 37.248 ms
+(28 rows)
+
