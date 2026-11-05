@@ -170,32 +170,30 @@ rotas.get('/relatorios/vendas-por-dia', assincrono(async (req, res) => {
   }
 
   const linhas = await consultar(
-    `SELECT p.id AS pedido_id, p.criado_em, p.observacoes, i.quantidade, i.preco_unitario_centavos
-       FROM pedidos p
+    `WITH p AS (
+       SELECT id, criado_em::date AS dia
+         FROM pedidos
+        WHERE criado_em >= $1::date::timestamp
+          AND criado_em < ($2::date + 1)::timestamp
+          AND status <> 'cancelado'
+     )
+     SELECT to_char(p.dia, 'YYYY-MM-DD') AS dia,
+            count(DISTINCT p.id)::int AS pedidos,
+            coalesce(sum(i.quantidade), 0)::int AS itens,
+            coalesce(sum(i.quantidade::bigint * i.preco_unitario_centavos::bigint), 0)::bigint AS receita_centavos
+       FROM p
        JOIN itens_pedido i ON i.pedido_id = p.id
-      WHERE p.criado_em::date BETWEEN $1 AND $2
-        AND p.status <> 'cancelado'`,
+      GROUP BY p.dia
+      ORDER BY p.dia`,
     [req.query.inicio, req.query.fim],
   );
 
-  const porDia = new Map();
-  for (const linha of linhas) {
-    const dia = linha.criado_em.toISOString().slice(0, 10);
-    if (!porDia.has(dia)) porDia.set(dia, { pedidos: new Set(), itens: 0, receita: 0 });
-    const acumulado = porDia.get(dia);
-    acumulado.pedidos.add(linha.pedido_id);
-    acumulado.itens += linha.quantidade;
-    acumulado.receita += linha.quantidade * linha.preco_unitario_centavos;
-  }
-
-  const resposta = [...porDia.entries()]
-    .sort(([a], [b]) => (a < b ? -1 : 1))
-    .map(([dia, acumulado]) => ({
-      dia,
-      pedidos: acumulado.pedidos.size,
-      itens: acumulado.itens,
-      receita_centavos: acumulado.receita,
-    }));
+  const resposta = linhas.map((linha) => ({
+    dia: linha.dia,
+    pedidos: Number(linha.pedidos),
+    itens: Number(linha.itens),
+    receita_centavos: Number(linha.receita_centavos),
+  }));
 
   res.json(resposta);
 }));
