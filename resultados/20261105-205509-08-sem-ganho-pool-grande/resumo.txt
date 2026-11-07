@@ -1,0 +1,17 @@
+Medição: 08-sem-ganho-pool-grande
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        4737
+Requisições/s:      78.24
+Tempo de resposta:  mediana 101.9 ms | p95 1004.3 ms | p99 1502.1 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1230      95.9 ms       195.0 ms      202.4 ms      0.0%    
+cliente-por-email     688       97.2 ms       200.0 ms      291.5 ms      0.0%    
+pedidos-do-cliente    981       192.7 ms      301.4 ms      399.5 ms      0.0%    
+pedidos-por-status    684       503.1 ms      1199.6 ms     2524.8 ms     0.0%    
+busca-produtos        702       98.7 ms       197.8 ms      299.1 ms      0.0%    
+vendas-por-dia        364       1001.7 ms     1594.4 ms     1801.3 ms     0.0%    
+top-produtos          88        94.8 ms       103.8 ms      195.4 ms      0.0%    
