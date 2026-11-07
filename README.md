@@ -1,26 +1,8 @@
 # Vaga Estágio Pesquisa e Inovação 2026 - Desafios Técnicos
 
-Aplicação do desafio técnico da vaga de estágio em Pesquisa e Inovação da Tech for Humans. O enunciado, com a missão, as entregas e os critérios de avaliação, é enviado na largada. Este README cobre como instalar, rodar, medir e o resumo das otimizações realizadas.
+Aplicação do desafio técnico da vaga de estágio em Pesquisa e Inovação da Tech for Humans. O enunciado, com a missão, as entregas e os critérios de avaliação, é enviado na largada. Este README cobre só como instalar, rodar e medir a aplicação, e é a referência de todos os comandos.
 
-A aplicação é a API de uma loja fictícia, em Node.js (Express) com PostgreSQL 16, rodando em containers. Ela funciona, mas ficava severa sob carga na versão original. Todos os dados são sintéticos e gerados na primeira subida: 100 mil clientes, 20 mil produtos, 500 mil pedidos e 1,5 milhão de itens de pedido.
-
-## Resumo dos Resultados e Otimizações Realizadas
-
-Através de diagnóstico com `EXPLAIN ANALYZE` e aplicação de 7 hipóteses progressivas (registradas em `experimentos.md` e detalhadas no artigo em `artigo/artigo.md`), obtivemos:
-
-| Métrica | Linha de Base Original | Versão Final Otimizada | Ganho / Variação |
-|---|---|---|---|
-| **Vazão (Throughput)** | 2,17 req/s (195 req) | **81,66 req/s (4.938 req)** | **+3.663% (37,6x mais requisições)** |
-| **Latência Mediana Geral** | 1.112,7 ms | **100,7 ms** | **-90,9%** |
-| **Latência p95 Geral** | 28.953,4 ms | **1.002,2 ms** | **-96,5%** |
-| **Memória do PostgreSQL** | 404 MiB | **289 MiB** | **-28,5%** |
-| **Contrato da API** | Gravado (42 rotas) | **100% Mantido** | Nenhuma quebra de contrato |
-
-- **Artigo completo:** [`artigo/artigo.md`](artigo/artigo.md)
-- **Tabela de experimentos:** [`experimentos.md`](experimentos.md)
-- **Pesquisas e testes futuros:** [`proximos-testes.md`](proximos-testes.md)
-- **Planos de execução (diagnósticos):** pasta [`diagnostico/`](diagnostico/)
-
+A aplicação é a API de uma loja fictícia, em Node.js (Express) com PostgreSQL 16, rodando em containers. Ela funciona, mas fica lenta sob carga e gasta mais recursos do que deveria. Todos os dados são sintéticos e gerados na primeira subida: 100 mil clientes, 20 mil produtos, 500 mil pedidos e 1,5 milhão de itens de pedido.
 
 ## Prazo e entrega
 
