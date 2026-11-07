@@ -5,7 +5,7 @@ Fichas técnicas das ideias pesquisadas durante o projeto com status **"Pesquisa
 ---
 
 ### 1. Cache em Memória com Redis para Relatórios e Buscas
-- **Origem / Referência:** [Redis Documentation - Caching Architecture](https://redis.io/docs/latest/develop/use/patterns/caching/)
+- **Origem / Referência:** [Redis Caching Solutions](https://redis.io/solutions/caching/)
 - **O que ganharia:** Desoneração de até 90% das leituras repetidas em rotas analíticas (`/relatorios/top-produtos` e `/relatorios/vendas-por-dia`), reduzindo o consumo de CPU do container PostgreSQL de 98% para menos de 30% e viabilizando latências sub-milissegundo (< 2 ms).
 - **Como testaria:** Adicionar um serviço `redis:7-alpine` ao `docker-compose.yml`, implementar middleware de cache com TTL (ex.: 60 segundos) na API Express para respostas HTTP 200, invalidando ou expirando dados sob demanda. Medir com `scripts/medir.sh 08-cache-redis`.
 - **O que precisaria para testar:** Alocar cerca de 64 MB de limite de memória para o container Redis e validar no edital o balanço de custo computacional vs. ganho de vazão.
