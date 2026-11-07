@@ -95,4 +95,4 @@ Cada hipótese foi medida 3 vezes sob o protocolo oficial (20 VUs, 60s, semente 
 
 ## 9. Uso de IA
 
-O modelo de linguagem atuou como assistente para automação dos scripts de medição e extração de métricas de planos de execução (`EXPLAIN ANALYZE`). Todas as soluções, medições e comprovações de contrato foram executadas diretamente no ambiente Docker da máquina e validadas pelos scripts oficiais.
+Utilizei o agente Antigravity (com Gemini) para automatizar a execução sequencial das baterias de carga (`medir.sh`), a extração automatizada de planos de execução `EXPLAIN (ANALYZE, BUFFERS)` e a implementação ágil dos scripts SQL e refatorações no Node.js. Todas as hipóteses de diagnóstico, validação contínua da integridade do contrato (42/42 respostas idênticas), conferência manual de cada uma das fontes bibliográficas primárias e a análise crítica dos trade-offs computacionais e de memória foram conduzidas, verificadas e validadas por mim a partir dos logs brutos gerados nos containers.
