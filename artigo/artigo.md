@@ -74,6 +74,10 @@ Cada hipótese foi medida 3 vezes sob o protocolo oficial (20 VUs, 60s, semente 
 - **Memória do Banco:** diminuiu de **404 MiB** para **289 MiB** (-28,5%).
 - **Contrato:** **100% mantido** em todas as medições.
 
+![Tempo de resposta p95 antes e depois de cada mudança](img/p95-por-mudanca.png)
+
+![Evolução do throughput em requisições por segundo por etapa](img/throughput-req-s.png)
+
 ## 7. Limites e testes futuros
 
 1. **Atualização da Materialized View:** A view `mv_top_produtos` é estática. Em cenários de escrita intensa, exige rotina periódica (`REFRESH MATERIALIZED VIEW CONCURRENTLY`) ou tabelas de agregação por triggers.
