@@ -99,4 +99,9 @@ Cada hipótese foi medida 3 vezes sob o protocolo oficial (20 VUs, 60s, semente 
 
 ## 9. Uso de IA
 
-Utilizei o agente Antigravity (com Gemini) para automatizar a execução sequencial das baterias de carga (`medir.sh`), a extração automatizada de planos de execução `EXPLAIN (ANALYZE, BUFFERS)` e a implementação ágil dos scripts SQL e refatorações no Node.js. Todas as hipóteses de diagnóstico, validação contínua da integridade do contrato (42/42 respostas idênticas), conferência manual de cada uma das fontes bibliográficas primárias e a análise crítica dos trade-offs computacionais e de memória foram conduzidas, verificadas e validadas por mim a partir dos logs brutos gerados nos containers.
+Utilizei o agente de codificação autônoma Antigravity (desenvolvido pelo time do Google DeepMind, operando com modelos Gemini) como copiloto de engenharia para acelerar o ciclo de experimentação. O agente foi empregado para:
+1. Automatizar o disparo sequencial das baterias de carga e coleta de métricas com o script oficial `scripts/medir.sh`;
+2. Capturar e estruturar as saídas de telemetria e planos de execução brutos (`EXPLAIN (ANALYZE, BUFFERS)`);
+3. Auxiliar na escrita sintática das refatorações SQL (agregações JSON, CTEs, criação de visões materializadas e extensão `pg_trgm`) e na implementação do `pg.Pool` no Express.
+
+Todas as decisões arquiteturais, formulações de hipóteses de causa-raiz, validação contínua da conformidade do contrato HTTP (42/42 respostas idênticas), teste de hipótese sem ganho (08), verificação individual de cada link e fonte bibliográfica primária, e a redação analítica deste relatório foram conduzidas, auditadas e validadas criticamente por mim sobre os dados reais gerados nos containers.
